@@ -10,8 +10,10 @@ import UIKit
 
 class TodoListTableViewController: UITableViewController {
     
-    let itemArray = ["Granola", "Apple", "Orange"]
-
+    var itemArray = ["Granola", "Apple", "Orange"]
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -20,6 +22,23 @@ class TodoListTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+    }
+    
+    @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
+        var textField = UITextField()
+        let ac = UIAlertController(title: "Add new item", message: nil, preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "Add Item", style: .default, handler: { (action) in
+            self.itemArray.append(textField.text!)
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }))
+        ac.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        ac.addTextField { (alertTF) in
+            alertTF.placeholder = "Create new item"
+            textField = alertTF
+        }
+        present(ac, animated: true)
     }
 }
 
