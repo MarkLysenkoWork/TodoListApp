@@ -12,16 +12,14 @@ class TodoListTableViewController: UITableViewController {
     
     var itemArray = ["Granola", "Apple", "Orange"]
     
-    
+    let defaults = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        if let items = defaults.array(forKey: "TodoListArray") as? [String] {
+            itemArray = items
+        }
     }
     
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
@@ -29,6 +27,7 @@ class TodoListTableViewController: UITableViewController {
         let ac = UIAlertController(title: "Add new item", message: nil, preferredStyle: .alert)
         ac.addAction(UIAlertAction(title: "Add Item", style: .default, handler: { (action) in
             self.itemArray.append(textField.text!)
+            self.defaults.set(self.itemArray, forKey: "TodoListArray")
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
