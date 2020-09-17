@@ -57,7 +57,12 @@ class TodoListTableViewController: UITableViewController {
         } catch {
             print("Error fetching data from contex, \(error)")
         }
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
     }
+    
+    
 }
 
 //MARK: - Table view data source
