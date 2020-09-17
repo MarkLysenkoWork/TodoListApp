@@ -13,6 +13,11 @@ class TodoListTableViewController: UITableViewController {
     
     var itemArray = [Item]()
     let contex = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    var selectedCategory: Category? {
+        didSet {
+            loadItems()
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,6 +32,7 @@ class TodoListTableViewController: UITableViewController {
             let newItem = Item(context: self.contex)
             newItem.title = textField.text!
             newItem.done = false
+            newItem.parentCategory = self.selectedCategory
             
             self.itemArray.append(newItem)
             self.saveItems()
@@ -52,6 +58,9 @@ class TodoListTableViewController: UITableViewController {
     }
     
     func loadItems(with request: NSFetchRequest<Item> = Item.fetchRequest()) {
+        let predicate = NSPredicate(format: "parentCategory.name MATCHES %@", selectedCategory!.name!)
+        request.predicate = predicate
+        
         do {
             itemArray = try contex.fetch(request)
         } catch {
