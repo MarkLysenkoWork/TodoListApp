@@ -14,6 +14,7 @@ class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegat
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tableView.rowHeight = 80.0
 
     }
     
@@ -36,8 +37,7 @@ class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegat
         let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
             
             self.updateModel(at: indexPath )
-            
-//
+
             
         }
         deleteAction.image = UIImage(named: "trashIcon")
