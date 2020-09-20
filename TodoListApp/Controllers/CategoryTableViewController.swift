@@ -8,7 +8,8 @@
 
 import UIKit
 import RealmSwift
-import SwipeCellKit
+import ChameleonFramework
+
 
 class CategoryTableViewController: SwipeTableViewController {
     
@@ -91,6 +92,7 @@ extension CategoryTableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
+        
         cell.textLabel?.text = categories? [indexPath.row].name ?? "No Categories added yet"
         return cell
     }
