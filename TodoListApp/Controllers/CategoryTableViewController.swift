@@ -20,6 +20,7 @@ class CategoryTableViewController: SwipeTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tableView.separatorStyle = .none
         
         
         loadCategories()
@@ -31,8 +32,11 @@ class CategoryTableViewController: SwipeTableViewController {
         
         let ac = UIAlertController(title: "Add New Category", message: "", preferredStyle: .alert)
         ac.addAction(UIAlertAction(title: "Add", style: .default, handler: { (action) in
+            
             let newCategory = Category( )
             newCategory.name = textField.text!
+            newCategory.color = UIColor.randomFlat().hexValue()
+            
             self.save(category: newCategory)
         }))
         ac.addTextField { (field) in
@@ -58,8 +62,6 @@ class CategoryTableViewController: SwipeTableViewController {
     
     func loadCategories() {
         categories = realm.objects(Category.self)
-        
-        
         DispatchQueue.main.async {
             self.tableView.reloadData()
         }
@@ -84,16 +86,16 @@ class CategoryTableViewController: SwipeTableViewController {
 //MARK: - TableView Date source methods
 extension CategoryTableViewController {
     
-    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return categories?.count ?? 1
     }
     
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
         
+        cell.backgroundColor = UIColor(hexString: categories?[indexPath.row].color ?? "1D9BF6")
         cell.textLabel?.text = categories? [indexPath.row].name ?? "No Categories added yet"
+        
         return cell
     }
 }
