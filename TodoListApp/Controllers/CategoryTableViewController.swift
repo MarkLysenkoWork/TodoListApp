@@ -21,9 +21,16 @@ class CategoryTableViewController: SwipeTableViewController {
         super.viewDidLoad()
         
         tableView.separatorStyle = .none
-        
+        //navigationController?.navigationBar.prefersLargeTitles = true
         
         loadCategories()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        guard let navBar = navigationController?.navigationBar else {
+            fatalError("Navigation controller does not exist")
+        }
+        navBar.barTintColor = UIColor(hexString: "1D9BF6")
     }
     
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
@@ -93,9 +100,15 @@ extension CategoryTableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
         
-        cell.backgroundColor = UIColor(hexString: categories?[indexPath.row].color ?? "1D9BF6")
-        cell.textLabel?.text = categories? [indexPath.row].name ?? "No Categories added yet"
         
+        if let category = categories?[indexPath.row] {
+            cell.textLabel?.text = category.name
+            guard let categoryColour = UIColor(hexString: category.color) else { fatalError() }
+            cell.backgroundColor = categoryColour
+            cell.textLabel?.textColor = ContrastColorOf(categoryColour, returnFlat: true)
+            
+        }
+
         return cell
     }
 }
@@ -104,6 +117,7 @@ extension CategoryTableViewController {
 extension CategoryTableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         performSegue(withIdentifier: "goToItems", sender: self)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

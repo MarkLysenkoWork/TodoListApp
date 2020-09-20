@@ -23,7 +23,13 @@ class TodoListTableViewController: SwipeTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationController?.navigationBar.barTintColor = UIColor(hexString: selectedCategory?.color ?? "1D9BF6")
+        if let colorHex = selectedCategory?.color {
+            title = selectedCategory!.name
+            guard let navBar = navigationController?.navigationBar else { fatalError("Navigation controller does not exist.") }
+            navBar.barTintColor = UIColor(hexString: colorHex)
+
+        }
+        
         
     }
     
@@ -121,7 +127,7 @@ extension TodoListTableViewController {
 //MARK: - Table view delegate
 extension TodoListTableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+
         if let item = todoItems?[indexPath.row] {
             
             do {
